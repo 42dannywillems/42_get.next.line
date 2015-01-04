@@ -132,12 +132,12 @@ int		ft_strstr_p(const char *haystack, const char *needle);
 
 /* File manipulations functions */
 // Reading
-char	*ft_getnext(const char *needle);
-char	*ft_getnext_fd(int fd, const char *needle);
-char	*ft_getnext_line();
-char	*ft_getnext_line_fd(int fd);
-char	*ft_getnext_word();
-char	*ft_getnext_word_fd(int fd);
+//char	*ft_getnext(const char *needle);
+//char	*ft_getnext_fd(int fd, const char *needle);
+//char	*ft_getnext_line();
+//char	*ft_getnext_line_fd(int fd);
+//char	*ft_getnext_word();
+//char	*ft_getnext_word_fd(int fd);
 /* End file manipulations functions */
 
 
