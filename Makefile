@@ -7,11 +7,11 @@ $(NAME):
 	gcc -L libft/ -I libft/includes $(SRC) -o $(NAME) -lft
 
 clean:
-	#$(MAKE) -C libft/ clean
+	$(MAKE) -C libft/ clean
 	rm -rf $(SRC:.c=.o)
 
 fclean: clean
-	#$(MAKE) -C libft/ fclean
+	$(MAKE) -C libft/ fclean
 	rm -rf $(NAME) $(NAME).zip
 
 re: fclean $(NAME)
