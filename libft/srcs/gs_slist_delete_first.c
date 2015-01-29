@@ -5,7 +5,7 @@
  * See gs_slist_delete to delete all occurences data */
 
 t_slist	*gs_slist_delete_first(	t_slist *list, void *data,
-								int cmp(void *, void *))
+								int cmp())
 {
 	t_slist *tmp;
 

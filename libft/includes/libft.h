@@ -66,8 +66,6 @@ void	ft_strclr(char *s);
 char	*ft_strnew(size_t size);
 char	*ft_strdup(const char *s1);
 char	*ft_strndup(const char *src, size_t n);
-char	*ft_str_realloc(char *ptr, size_t new_size);
-
 
 // Length
 size_t	ft_strlen(const char *str);
@@ -80,7 +78,6 @@ int		ft_tolower(int c);
 char	*ft_strcat(char *dest, const char *src);
 char	*ft_strncat(char *dest, const char *src, size_t nb);
 char	*ft_strlcat(char *dest, const char *src, size_t size);
-char	*ft_strscat(char *s1, const char *s2);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 
@@ -127,6 +124,7 @@ char	**ft_strsplit(const char *str, char c);
 char	**ft_strsplit_str(const char *str, const char *sep);
 char	*ft_strsub(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin_free(char *s1, const char *s2);
 int		ft_atoi(const char *str);
 char	**ft_splitwhitespaces(const char *str);
 

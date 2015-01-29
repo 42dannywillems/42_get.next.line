@@ -1,6 +1,6 @@
 #include "gs_slist.h"
 
-t_slist	*gs_slist_find_max(t_slist *list, int (*cmp)(void *, void *))
+t_slist	*gs_slist_find_max(t_slist *list, int (*cmp)())
 {
 	t_slist *max;
 

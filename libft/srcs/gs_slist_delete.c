@@ -4,7 +4,7 @@
  * Delete all occurences data.
  * See gs_slist_delete_first to delete first occurence data */
 
-t_slist	*gs_slist_delete(t_slist *list, void *data, int cmp(void *, void *))
+t_slist	*gs_slist_delete(t_slist *list, void *data, int cmp())
 {
 	t_slist *tmp;
 
