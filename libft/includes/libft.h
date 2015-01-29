@@ -4,11 +4,17 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+#include "math42.h"
 #include "gs_typedef.h"
 #include "gs_slist.h"
 #include "gs_stack.h"
+#include "gs_bstree.h"
+#include "gs_avltree.h"
 
-# define ISNULL(x) if (((x)) == NULL) return (NULL)
+# define ISNULL(x)			if (((x)) == NULL) return (NULL)
+# define ISNULL_ZERO(x)		if (((x)) == NULL) return (0)
+# define ISZERO(x)			if (((x)) == 0) return (0)
+# define ISZERO_NULL(x)		if (((x)) == 0) return (NULL)
 
 typedef struct	s_list
 {
@@ -53,12 +59,15 @@ void	*ft_memchr(const void *s, int c, size_t n);
 /* String manipulation functions */
 // Free
 void	ft_strdel(char **as);
+char	*ft_strndel(char **as, size_t n);
 void	ft_strclr(char *s);
 
 // Create
 char	*ft_strnew(size_t size);
 char	*ft_strdup(const char *s1);
 char	*ft_strndup(const char *src, size_t n);
+char	*ft_str_realloc(char *ptr, size_t new_size);
+
 
 // Length
 size_t	ft_strlen(const char *str);
@@ -70,7 +79,8 @@ int		ft_tolower(int c);
 // Copy & Assign
 char	*ft_strcat(char *dest, const char *src);
 char	*ft_strncat(char *dest, const char *src, size_t nb);
-char	*ft_strlcat(char *dest, const char *stc, size_t size);
+char	*ft_strlcat(char *dest, const char *src, size_t size);
+char	*ft_strscat(char *s1, const char *s2);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 
@@ -131,6 +141,7 @@ int		ft_strstr_p(const char *haystack, const char *needle);
 /* End string manipulations functions */
 
 /* File manipulations functions */
+// TO REWRITE !!!
 // Reading
 //char	*ft_getnext(const char *needle);
 //char	*ft_getnext_fd(int fd, const char *needle);

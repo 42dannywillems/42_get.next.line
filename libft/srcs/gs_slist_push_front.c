@@ -2,12 +2,12 @@
 
 t_slist	*gs_slist_push_front(t_slist *list, void *data)
 {
-	t_slist *tmp;
-
-	if ((tmp = gs_slist_create(data)))
+	if (list)
 	{
-		if (!gs_slist_isempty(list))
-			tmp->next = list;
+		if (list->data)
+			return (gs_slist_create(data, list));
+		else
+			list->data = data;
 	}
-	return (tmp);
+	return ((list = gs_slist_create(data, NULL)));
 }

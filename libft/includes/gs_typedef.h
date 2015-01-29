@@ -13,5 +13,4 @@ typedef int				bool_t;
 # define FALSE		0
 
 # define NOT_FOUND	-1
-# define BUFSIZE	4096
 #endif

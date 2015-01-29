@@ -1,6 +1,6 @@
 #include "gs_slist.h"
 
-t_slist		*gs_slist_create(void *data)
+t_slist		*gs_slist_create(void *data, t_slist *next)
 {
 	t_slist	*list;
 
@@ -8,7 +8,7 @@ t_slist		*gs_slist_create(void *data)
 	if (list)
 	{
 		list->data = data;
-		list->next = NULL;
+		list->next = next;
 	}
 	return (list);
 }

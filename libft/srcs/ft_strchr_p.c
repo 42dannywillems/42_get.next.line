@@ -4,8 +4,7 @@ int		ft_strchr_p(const char *str, int c)
 {
 	count_t i;
 
-	if (str == NULL)
-		return (0);
+	ISNULL_ZERO(str);
 	i = 0;
 	while (str[i])
 	{
