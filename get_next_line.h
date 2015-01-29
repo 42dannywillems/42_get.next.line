@@ -17,8 +17,9 @@ typedef struct		s_file
 	char	*red;
 }					t_file;
 
-t_slist	*get_fd(t_slist **opened_fd, int fd);
 int		find_fd(int *fd_search, t_file *fd_compare);
+t_slist	*get_fd(t_slist **opened_fd, int fd);
+t_slist	*init_fd(int fd);
 int		get_next_line(int fd, char **line);
 
 #endif
