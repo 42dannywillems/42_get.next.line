@@ -41,7 +41,10 @@ t_slist		*init_fd(int fd)
 	if ((current_file = (t_file *)(malloc(sizeof(t_file)))) == NULL)
 		return (NULL);
 	if ((current_file->red = ft_strnew(0)))
-		current_file->fd;
+	{
+		current_file->red = "\0";
+		current_file->fd = fd;
+	}
 	else
 	{
 		free(current_file);
@@ -66,63 +69,52 @@ int		get_next_line(int fd, char **line)
 	char			*chr; // strchr
 	int				yet;
 
-	// opened_fd est mis à jour automatiquement
-	// Si il est nul, ça veut dire qu'on a eu une erreur lors d'une allocation,
-	// donc on renvoie une erreur.
 	yet = TRUE;
+	// At the first call, we must initialize opened_fd. init_fd do it.
 	if (opened_fd == NULL)
 	{
 		if ((opened_fd = init_fd(fd)) == NULL)
 			return (GNL_ERROR);
 		current_fd = opened_fd;
 	}
+	// opened_fd est mis à jour automatiquement
+	// Si il est null, ça veut dire qu'on a eu une erreur lors d'une allocation,
+	// donc on renvoie une erreur.
 	else if ((current_fd = get_fd(&opened_fd, fd)) == NULL)
 			return (GNL_ERROR);
+	// To avoid too long assignement.
 	current_file = (t_file *)(current_fd->data);
-
-	ft_putstr("Red before all : ");
-	ft_putendl(current_file->red);
 
 	while (yet)
 	{
-		if ((ret = read(fd, buf, BUFSIZE)) == READ_ERROR)
-			return (GNL_ERROR);
-		buf[ret] = '\0';
-		// Si on a un retour à la ligne dans buf.
-		if ((chr = ft_strchr(buf, '\n')))
+		if ((chr = ft_strchr(current_file->red, '\n')))
 		{
-			*line = ft_strnew(ft_strlen(current_file->red) + chr - buf);
-			*line = ft_strcat(*line, current_file->red);
-			*line = ft_strncat(*line, buf, chr - buf);
-			ft_strclr(current_file->red);
-			current_file->red = ft_strdup(chr + 1);
-			if (ret == READ_FINISHED)
-			{
-//				gs_slist_del(opened_fd, &fd, &find_fd);
-				return (GNL_FINISHED);
-			}
+//			We keep characters from current_file->red beginning to chr, so chr -
+//			current_file->red characters to keep and duplicate in *line.
+			*line = ft_strndup(current_file->red, chr - current_file->red);
+//			clear character before chr
+//			current_file->red = ft_strndel(&(current_file->red), chr - current_file->red);
+//			Now, current_file->red points after the \n character
+			current_file->red = chr + 1;
+//			We stop to read.
 			yet = FALSE;
 		}
 		else
 		{
-			ft_putendl("Avant la concatenation");
-			ft_putstr("Red : ");
-			ft_putendl(current_file->red);
-			ft_putstr("Buffer : ");
-			ft_putendl(buf);
-			ft_putendl("------------------------");
-
-			current_file->red = ft_strscat(current_file->red, buf);
-
-			ft_putendl("Apres la concatenation, Red : ");
-			ft_putendl(current_file->red);
-			ft_putendl("------------------------\n");
-
+			if ((ret = read(fd, buf, BUFSIZE)) == READ_ERROR)
+				return (GNL_ERROR);
+			buf[ret] = '\0';
 			if (ret == READ_FINISHED)
 			{
-	//			gs_slist_del(opened_fd, &fd, &find_fd);
+				*line = ft_strdup(current_file->red);
+//				gs_slist_delete(opened_fd, &fd, &find_fd);
+				ft_strdel(&(current_file->red));
+//				free(current_file);
+//				free(current_fd);
 				return (GNL_FINISHED);
 			}
+//			Realloc current_file->red with enough memory space to concatenate with buffer
+			current_file->red = ft_strjoin_free(current_file->red, buf);
 		}
 	}
 	return (GNL_OK);
