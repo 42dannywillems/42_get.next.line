@@ -81,7 +81,8 @@ int		get_next_line(int fd, char **line)
 	// Si il est null, ça veut dire qu'on a eu une erreur lors d'une allocation,
 	// donc on renvoie une erreur.
 	else if ((current_fd = get_fd(&opened_fd, fd)) == NULL)
-			return (GNL_ERROR);
+		return (GNL_ERROR);
+
 	// To avoid too long assignement.
 	current_file = (t_file *)(current_fd->data);
 
@@ -107,10 +108,9 @@ int		get_next_line(int fd, char **line)
 			if (ret == READ_FINISHED)
 			{
 				*line = ft_strdup(current_file->red);
-//				gs_slist_delete(opened_fd, &fd, &find_fd);
+				gs_slist_delete(opened_fd, &fd, &find_fd);
 				ft_strdel(&(current_file->red));
-//				free(current_file);
-//				free(current_fd);
+				free(current_file);
 				return (GNL_FINISHED);
 			}
 //			Realloc current_file->red with enough memory space to concatenate with buffer
