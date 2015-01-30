@@ -26,7 +26,7 @@ t_slist		*get_fd(t_slist **opened_fd, int fd)
 				free(current_file);
 				return (NULL);
 			}
-			current_file->red[0] = '\0';
+			(current_file->red)[0] = '\0';
 			return ((*opened_fd = gs_slist_create(current_file, *opened_fd)));
 		}
 		return (NULL);
@@ -43,7 +43,7 @@ t_slist		*init_fd(int fd)
 		return (NULL);
 	if ((current_file->red = ft_strnew(0)))
 	{
-		current_file->red[0] = '\0';
+		(current_file->red)[0] = '\0';
 		current_file->fd = fd;
 	}
 	else
@@ -92,10 +92,10 @@ int		get_next_line(int fd, char **line)
 		if ((chr = ft_strchr(current_file->red, '\n')))
 		{
 //			We keep characters from current_file->red beginning to chr, so chr -
-//			current_file->red characters to keep and duplicate in *line.
+//			current_file->red characters to keep and to duplicate in *line.
 			*line = ft_strndup(current_file->red, chr - current_file->red);
 //			clear character before chr
-			current_file->red = ft_strndel(&(current_file->red), chr - current_file->red);
+//			current_file->red = ft_strndel(&(current_file->red), chr - current_file->red);
 //			Now, current_file->red points after the \n character
 			current_file->red = chr + 1;
 //			We stop to read.
@@ -103,7 +103,8 @@ int		get_next_line(int fd, char **line)
 		}
 		else
 		{
-			if ((ret = read(fd, buf, BUFSIZE)) == READ_ERROR)
+//			ft_putnbrendl(gs_slist_size(opened_fd));
+			if ((ret = read(current_file->fd, buf, BUFSIZE)) == READ_ERROR)
 				return (GNL_ERROR);
 			buf[ret] = '\0';
 			if (ret == READ_FINISHED)
@@ -115,10 +116,8 @@ int		get_next_line(int fd, char **line)
 				return (GNL_FINISHED);
 			}
 //			Realloc current_file->red with enough memory space to concatenate with buffer
-			ft_putendl(current_file->red);
 			if ((current_file->red = ft_strjoin_free(current_file->red, buf)) == NULL)
-				return (GNL_ERROR) == NULL)
-					return (GNL_ERROR);
+				return (GNL_ERROR);
 		}
 	}
 	return (GNL_OK);
