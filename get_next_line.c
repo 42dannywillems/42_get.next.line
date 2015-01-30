@@ -26,6 +26,7 @@ t_slist		*get_fd(t_slist **opened_fd, int fd)
 				free(current_file);
 				return (NULL);
 			}
+			current_file->red[0] = '\0';
 			return ((*opened_fd = gs_slist_create(current_file, *opened_fd)));
 		}
 		return (NULL);
@@ -42,7 +43,7 @@ t_slist		*init_fd(int fd)
 		return (NULL);
 	if ((current_file->red = ft_strnew(0)))
 	{
-		current_file->red = "\0";
+		current_file->red[0] = '\0';
 		current_file->fd = fd;
 	}
 	else
@@ -63,7 +64,7 @@ int		get_next_line(int fd, char **line)
 {
 	static t_slist	*opened_fd;
 	t_slist			*current_fd;
-	int				ret;
+	int				ret; // read
 	char			buf[BUFSIZE + 1];
 	t_file			*current_file; // Pour récupérer le data du noeud courant.
 	char			*chr; // strchr
@@ -94,7 +95,7 @@ int		get_next_line(int fd, char **line)
 //			current_file->red characters to keep and duplicate in *line.
 			*line = ft_strndup(current_file->red, chr - current_file->red);
 //			clear character before chr
-//			current_file->red = ft_strndel(&(current_file->red), chr - current_file->red);
+			current_file->red = ft_strndel(&(current_file->red), chr - current_file->red);
 //			Now, current_file->red points after the \n character
 			current_file->red = chr + 1;
 //			We stop to read.
@@ -114,7 +115,10 @@ int		get_next_line(int fd, char **line)
 				return (GNL_FINISHED);
 			}
 //			Realloc current_file->red with enough memory space to concatenate with buffer
-			current_file->red = ft_strjoin_free(current_file->red, buf);
+			ft_putendl(current_file->red);
+			if ((current_file->red = ft_strjoin_free(current_file->red, buf)) == NULL)
+				return (GNL_ERROR) == NULL)
+					return (GNL_ERROR);
 		}
 	}
 	return (GNL_OK);

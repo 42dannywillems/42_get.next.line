@@ -10,6 +10,7 @@ char	*ft_strndel(char **as, size_t n)
 		while (i < n)
 		{
 			free((*as) + i);
+			ft_putchar((*as)[i]);
 			i++;
 		}
 		return (*as + i);
