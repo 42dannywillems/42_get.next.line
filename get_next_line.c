@@ -90,7 +90,7 @@ int		get_next_line(int fd, char **line)
 	t_slist			*current_fd;
 	int				ret; // read
 	char			buf[BUFSIZE + 1];
-	t_file			*current_file; // Pour récupérer le data du noeud courant.
+	t_file			*current_file; // 
 	char			*chr; // strchr
 	int				yet;
 
@@ -102,13 +102,11 @@ int		get_next_line(int fd, char **line)
 			return (GNL_ERROR);
 		current_fd = opened_fd;
 	}
-	// opened_fd est mis à jour automatiquement
-	// Si il est null, ça veut dire qu'on a eu une erreur lors d'une allocation,
-	// donc on renvoie une erreur.
+	// opened_fd is updated automatically
+	// if get_fd returns NULL, it's because there's a malloc which didn't work,
+	// so we return an error.
 	else if ((current_fd = get_fd(&opened_fd, fd)) == NULL)
 		return (GNL_ERROR);
-
-	// To avoid too long assignement.
 	current_file = (t_file *)(current_fd->data);
 	while (yet)
 	{
@@ -116,17 +114,10 @@ int		get_next_line(int fd, char **line)
 		{
 			if ((update_red_line(current_file, line, NULL, chr - current_file->red)) == FALSE)
 				return (GNL_ERROR);
-//			We keep characters from current_file->red beginning to chr, so chr -
-//			current_file->red characters to keep and to duplicate in *line.
-//			*line = ft_strndup(current_file->red, chr - current_file->red);
-//			Now, current_file->red points after the \n character
-//			current_file->red = chr + 1;
-//			We stop to read.
 			yet = FALSE;
 		}
 		else
 		{
-//			ft_putnbrendl(gs_slist_size(opened_fd));
 			if ((ret = read(current_file->fd, buf, BUFSIZE)) == READ_ERROR)
 				return (GNL_ERROR);
 			buf[ret] = '\0';
@@ -134,17 +125,8 @@ int		get_next_line(int fd, char **line)
 			{
 				if ((update_red_line(current_file, line, buf, GNL_END) == FALSE))
 					return (GNL_ERROR);
-//				ft_putnbrendl(gs_slist_size(opened_fd));
-//				ft_putstr("FD : ");
-//				ft_putnbrendl(current_file->fd);
-//				*line = ft_strdup(current_file->red);
-//				ft_putendl("line");
-//				ft_putendl(*line);
-//				ft_putendl("CURRENT");
-//				ft_putendl(current_file->red);
 //				Delete the current_fd node in the same time
 				gs_slist_delete(opened_fd, &fd, &find_fd);
-//				ft_putnbrendl(gs_slist_size(opened_fd));
 				free(current_file);
 				return (GNL_FINISHED);
 			}
