@@ -109,8 +109,16 @@ int		get_next_line(int fd, char **line)
 			buf[ret] = '\0';
 			if (ret == READ_FINISHED)
 			{
+				ft_putnbrendl(gs_slist_size(opened_fd));
+				ft_putstr("FD : ");
+				ft_putnbrendl(current_file->fd);
 				*line = ft_strdup(current_file->red);
+				ft_putendl("line");
+				ft_putendl(*line);
+				ft_putendl("CURRENT");
+				ft_putendl(current_file->red);
 				gs_slist_delete(opened_fd, &fd, &find_fd);
+				ft_putnbrendl(gs_slist_size(opened_fd));
 				ft_strdel(&(current_file->red));
 				free(current_file);
 				return (GNL_FINISHED);
