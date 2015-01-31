@@ -8,21 +8,33 @@
 #define NB_LINE 500
 int main(int argc, char **argv)
 {
-	int fd;
+	int fd, fd2;
 	char *line;
 	count_t i;
+	char buf[6];
 
-	i = 0;
-	if (argc >= 1 && (fd = open(argv[1], O_RDONLY)) != -1)
+	if (argc >= 2 &&	(fd = open(argv[1], O_RDONLY)) != -1 &&
+						(fd2 = open(argv[2], O_RDONLY)) != -1)
 	{
-		while (get_next_line(fd, &line) > 0 && i < NB_LINE)
+		i = 0;
+		while (i < NB_LINE)
 		{
-			ft_putstr("Ligne ");
-			ft_putnbrendl(i);
-			ft_putendl(line);
+//			ft_putstr("Ligne ");
+//			ft_putnbrendl(i);
+			if (get_next_line(fd, &line) > 0)
+				ft_putendl(line);
 			ft_strdel(&line);
+
+//			read(STDIN, buf, 5);
+			if (get_next_line(fd2, &line) > 0)
+				ft_putendl(line);
+			ft_strdel(&line);
+
+//			read(STDIN, buf, 5);
 			i++;
 		}
+		close(fd);
+		close(fd2);
 	}
 	return (0);
 }
