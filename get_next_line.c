@@ -5,6 +5,31 @@ int		find_fd(int *fd_search, t_file *fd_compare)
 	return (*fd_search != fd_compare->fd);
 }
 
+int		update_red_line(t_file *file, char **line, char *buf, int type)
+{
+	char *tmp;
+
+	if (type >= 0 && (*line = ft_strndup(file->red, type)))
+	{
+		file->red += type + 1;
+		return (TRUE);
+	}
+	else if (type == GNL_FINISHED && (*line = ft_strdup(file->red)))
+	{
+		ft_strdel(&(file->b_red));
+		file->red = NULL;
+		return (TRUE);
+	}
+	else if (type == GNL_JOIN && (tmp = ft_strjoin(file->red, buf)))
+	{
+		ft_strdel(&(file->b_red));
+		file->red = tmp;
+		file->b_red = tmp;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 /*
  * Renvoie le noeud comportant fd comme fd.
  * Si le fd n'est pas encore dedans, il sera insere, et il sera mis en tete
@@ -17,16 +42,15 @@ t_slist		*get_fd(t_slist **opened_fd, int fd)
 
 	if ((current_fd = gs_slist_find(*opened_fd, &fd, &find_fd)) == NULL)
 	{
-		current_file = (t_file *)malloc(sizeof(t_file));
-		if (current_file)
+		if ((current_file = (t_file *)malloc(sizeof(t_file))));
 		{
-			current_file->fd = fd;
-			if ((current_file->red = ft_strnew(0)) == NULL)
+			if ((current_file->b_red = ft_strdup("")) == NULL)
 			{
 				free(current_file);
 				return (NULL);
 			}
-			(current_file->red)[0] = '\0';
+			current_file->fd = fd;
+			current_file->red = current_file->b_red;
 			return ((*opened_fd = gs_slist_create(current_file, *opened_fd)));
 		}
 		return (NULL);
@@ -41,9 +65,9 @@ t_slist		*init_fd(int fd)
 
 	if ((current_file = (t_file *)(malloc(sizeof(t_file)))) == NULL)
 		return (NULL);
-	if ((current_file->red = ft_strnew(0)))
+	if ((current_file->b_red = ft_strdup("")))
 	{
-		(current_file->red)[0] = '\0';
+		current_file->red = current_file->b_red;
 		current_file->fd = fd;
 	}
 	else
@@ -53,7 +77,7 @@ t_slist		*init_fd(int fd)
 	}
 	if ((opened_fd = gs_slist_create(current_file, NULL)) == NULL)
 	{
-		free(current_file->red);
+		free(current_file->b_red);
 		free(current_file);
 		return (NULL);
 	}
@@ -86,18 +110,17 @@ int		get_next_line(int fd, char **line)
 
 	// To avoid too long assignement.
 	current_file = (t_file *)(current_fd->data);
-
 	while (yet)
 	{
 		if ((chr = ft_strchr(current_file->red, '\n')))
 		{
+			if ((update_red_line(current_file, line, NULL, chr - current_file->red)) == FALSE)
+				return (GNL_ERROR);
 //			We keep characters from current_file->red beginning to chr, so chr -
 //			current_file->red characters to keep and to duplicate in *line.
-			*line = ft_strndup(current_file->red, chr - current_file->red);
-//			clear character before chr
-//			current_file->red = ft_strndel(&(current_file->red), chr - current_file->red);
+//			*line = ft_strndup(current_file->red, chr - current_file->red);
 //			Now, current_file->red points after the \n character
-			current_file->red = chr + 1;
+//			current_file->red = chr + 1;
 //			We stop to read.
 			yet = FALSE;
 		}
@@ -109,22 +132,24 @@ int		get_next_line(int fd, char **line)
 			buf[ret] = '\0';
 			if (ret == READ_FINISHED)
 			{
-				ft_putnbrendl(gs_slist_size(opened_fd));
-				ft_putstr("FD : ");
-				ft_putnbrendl(current_file->fd);
-				*line = ft_strdup(current_file->red);
-				ft_putendl("line");
-				ft_putendl(*line);
-				ft_putendl("CURRENT");
-				ft_putendl(current_file->red);
+				if ((update_red_line(current_file, line, buf, GNL_END) == FALSE))
+					return (GNL_ERROR);
+//				ft_putnbrendl(gs_slist_size(opened_fd));
+//				ft_putstr("FD : ");
+//				ft_putnbrendl(current_file->fd);
+//				*line = ft_strdup(current_file->red);
+//				ft_putendl("line");
+//				ft_putendl(*line);
+//				ft_putendl("CURRENT");
+//				ft_putendl(current_file->red);
+//				Delete the current_fd node in the same time
 				gs_slist_delete(opened_fd, &fd, &find_fd);
-				ft_putnbrendl(gs_slist_size(opened_fd));
-				ft_strdel(&(current_file->red));
+//				ft_putnbrendl(gs_slist_size(opened_fd));
 				free(current_file);
 				return (GNL_FINISHED);
 			}
 //			Realloc current_file->red with enough memory space to concatenate with buffer
-			if ((current_file->red = ft_strjoin_free(current_file->red, buf)) == NULL)
+			if ((update_red_line(current_file, NULL, buf, GNL_JOIN) == FALSE))
 				return (GNL_ERROR);
 		}
 	}
