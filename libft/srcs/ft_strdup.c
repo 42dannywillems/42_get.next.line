@@ -5,10 +5,6 @@
 */
 char *ft_strdup(const char *s1)
 {
-	char *dest;
-
-	dest = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
-	dest = ft_strcpy(dest, s1);
-	return (dest);
+	return (ft_strcpy(ft_strnew(ft_strlen(s1)), s1));
 }
 
