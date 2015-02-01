@@ -42,7 +42,7 @@ t_slist		*get_fd(t_slist **opened_fd, int fd)
 
 	if ((current_fd = gs_slist_find(*opened_fd, &fd, &find_fd)) == NULL)
 	{
-		if ((current_file = (t_file *)malloc(sizeof(t_file))));
+		if ((current_file = (t_file *)malloc(sizeof(t_file))))
 		{
 			if ((current_file->b_red = ft_strdup("")) == NULL)
 			{
@@ -51,7 +51,7 @@ t_slist		*get_fd(t_slist **opened_fd, int fd)
 			}
 			current_file->fd = fd;
 			current_file->red = current_file->b_red;
-			return ((*opened_fd = gs_slist_create(current_file, *opened_fd)));
+			return ((*opened_fd = gs_slist_push_front(*opened_fd, current_file)));
 		}
 		return (NULL);
 	}
@@ -88,10 +88,10 @@ int		get_next_line(int fd, char **line)
 {
 	static t_slist	*opened_fd;
 	t_slist			*current_fd;
-	int				ret; // read
+	t_file			*current_file;
+	int				ret;
 	char			buf[BUFSIZE + 1];
-	t_file			*current_file; // 
-	char			*chr; // strchr
+	char			*chr;
 	int				yet;
 
 	yet = TRUE;
@@ -112,7 +112,7 @@ int		get_next_line(int fd, char **line)
 	{
 		if ((chr = ft_strchr(current_file->red, '\n')))
 		{
-			if ((update_red_line(current_file, line, NULL, chr - current_file->red)) == FALSE)
+			if (update_red_line(current_file, line, NULL, chr - current_file->red) == FALSE)
 				return (GNL_ERROR);
 			yet = FALSE;
 		}
@@ -123,10 +123,11 @@ int		get_next_line(int fd, char **line)
 			buf[ret] = '\0';
 			if (ret == READ_FINISHED)
 			{
-				if ((update_red_line(current_file, line, buf, GNL_END) == FALSE))
+				if (update_red_line(current_file, line, buf, GNL_END) == FALSE)
 					return (GNL_ERROR);
 //				Delete the current_fd node in the same time
 				gs_slist_delete(opened_fd, &fd, &find_fd);
+				ft_strdel(&(current_file->b_red));
 				free(current_file);
 				return (GNL_FINISHED);
 			}
