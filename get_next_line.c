@@ -1,8 +1,8 @@
 #include "get_next_line.h"
 
-int		find_fd(int *fd_search, t_file *fd_compare)
+int		find_fd(void *fd_search, void *fd_compare)
 {
-	return (*fd_search != fd_compare->fd);
+	return (*(int *)fd_search != ((t_file *)(fd_compare))->fd);
 }
 
 int		update_red_line(t_file *file, char **line, char *buf, int type)
