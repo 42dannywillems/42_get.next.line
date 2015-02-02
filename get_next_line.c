@@ -92,9 +92,7 @@ int		get_next_line(int fd, char **line)
 	int				ret;
 	char			buf[BUFSIZE + 1];
 	char			*chr;
-	int				yet;
 
-	yet = TRUE;
 	// At the first call, we must initialize opened_fd. init_fd do it.
 	if (opened_fd == NULL)
 	{
@@ -108,33 +106,31 @@ int		get_next_line(int fd, char **line)
 	else if ((current_fd = get_fd(&opened_fd, fd)) == NULL)
 		return (GNL_ERROR);
 	current_file = (t_file *)(current_fd->data);
-	while (yet)
+
+	if ((chr = ft_strchr(current_file->red, '\n')))
 	{
-		if ((chr = ft_strchr(current_file->red, '\n')))
+		if (!update_red_line(current_file, line, NULL, chr - current_file->red))
+			return (GNL_ERROR);
+	}
+	else
+	{
+		if ((ret = read(current_file->fd, buf, BUFSIZE)) == READ_ERROR)
+			return (GNL_ERROR);
+		buf[ret] = '\0';
+		if (ret == READ_FINISHED)
 		{
-			if (update_red_line(current_file, line, NULL, chr - current_file->red) == FALSE)
+			if (update_red_line(current_file, line, buf, GNL_END) == FALSE)
 				return (GNL_ERROR);
-			yet = FALSE;
+//			Delete the current_fd node in the same time
+			gs_slist_delete(opened_fd, &fd, &find_fd);
+			ft_strdel(&(current_file->b_red));
+			free(current_file);
+			return (GNL_FINISHED);
 		}
-		else
-		{
-			if ((ret = read(current_file->fd, buf, BUFSIZE)) == READ_ERROR)
-				return (GNL_ERROR);
-			buf[ret] = '\0';
-			if (ret == READ_FINISHED)
-			{
-				if (update_red_line(current_file, line, buf, GNL_END) == FALSE)
-					return (GNL_ERROR);
-//				Delete the current_fd node in the same time
-				gs_slist_delete(opened_fd, &fd, &find_fd);
-				ft_strdel(&(current_file->b_red));
-				free(current_file);
-				return (GNL_FINISHED);
-			}
-//			Realloc current_file->red with enough memory space to concatenate with buffer
-			if ((update_red_line(current_file, NULL, buf, GNL_JOIN) == FALSE))
-				return (GNL_ERROR);
-		}
+//		Realloc current_file->red with enough memory space to concatenate with buffer
+		if (update_red_line(current_file, NULL, buf, GNL_JOIN) == FALSE)
+			return (GNL_ERROR);
+		get_next_line(fd, line);
 	}
 	return (GNL_OK);
 }
