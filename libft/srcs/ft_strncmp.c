@@ -1,3 +1,13 @@
+/**
+ * \file ft_strncmp.c
+ * \author Danny Willems
+ *
+ * \fn int ft_strncmp(const char *s1, const char *s2, size_t n)
+ * \brief Same as strncmp in the standard library
+ *
+ * strncmp implementation. Return NULL if one of the arguments is NULL.
+ */
+
 #include "libft.h"
 
 int		ft_strncmp(const char *s1, const char *s2, size_t n)

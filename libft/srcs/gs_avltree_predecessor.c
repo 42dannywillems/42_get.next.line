@@ -1,6 +1,10 @@
+/**
+ * DO NOT USE. NOT TESTED AND ALGORITHM NOT CHECKED.
+ */
+
 #include "libft.h"
 
-t_avltree	*gs_avltree_predecessor(	t_avltree *avltree, void *data,
+t_avltree	*gs_avltree_predecessor(t_avltree *avltree, void *data,
 									int cmp(void *, void *))
 {
 	t_avltree *tmp;

@@ -1,3 +1,13 @@
+/**
+ * \file ft_itoa.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_itoa(int n)
+ * \brief Same as itoa in the standard library
+ *
+ * itoa implementation.
+ */
+
 #include "libft.h"
 
 static void	_ft_itoa(char *s, int n, count_t i)

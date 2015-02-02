@@ -1,3 +1,14 @@
+/**
+ * \file ft_strchr_p.c
+ * \author Danny Willems
+ *
+ * \fn int ft_strchr_p(const char *str, int c)
+ * \brief Return position of the first occurence c in str.
+ *
+ * Return position of the first occurence c in str. Return -1 if c is not in
+ * str.
+ */
+
 #include "libft.h"
 
 int		ft_strchr_p(const char *str, int c)

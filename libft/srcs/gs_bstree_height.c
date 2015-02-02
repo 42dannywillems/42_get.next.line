@@ -1,3 +1,7 @@
+/**
+ * DO NOT USE. NOT TESTED AND ALGORITHM NOT CHECKED.
+ */
+
 #include "libft.h"
 
 size_t		gs_bstree_height(const t_bstree *bstree)

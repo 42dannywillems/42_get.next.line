@@ -1,3 +1,14 @@
+/**
+ * \file ft_strjoin.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_strjoin(char const *s1, char const *s2)
+ * \brief Join the two string into a new one.
+ *
+ * Create with ft_strnew a new string and copy the two string s1 and s2 into it.
+ * See ft_strjoin_free to free s1 after joining.
+ */
+
 #include "libft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)

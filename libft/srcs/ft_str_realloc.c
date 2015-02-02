@@ -1,8 +1,15 @@
-#include "libft.h"
+/**
+ * \file ft_str_realloc.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_str_realloc(char *ptr, size_t new_size)
+ * \brief Realloc a string.
+ *
+ * Create a new string with size new_size, copy ptr data into it, and free ptr.
+ * It returns the pointer to the first element of the new string.
+ */
 
-/* 
- * ft_strdel (espescially free) can only be used with strings created by malloc
-*/
+#include "libft.h"
 
 char	*ft_str_realloc(char *ptr, size_t new_size)
 {

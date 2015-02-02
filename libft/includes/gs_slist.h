@@ -13,10 +13,10 @@ typedef struct		s_slist
 t_slist	*gs_slist_create(void *data, t_slist *next);
 void	gs_slist_clear(t_slist **list);
 // Not Tested
-t_slist	*gs_slist_delete(t_slist *list, void *data, int cmp());
+t_slist	*gs_slist_delete(t_slist *list, void *data, int cmp(void *, void *));
 // Not Tested
 t_slist	*gs_slist_delete_first(	t_slist *list, void *data,
-								int cmp());
+								int cmp(void *, void *));
 size_t	gs_slist_size(const t_slist *list);
 bool_t	gs_slist_isempty(const t_slist *list);
 
@@ -26,9 +26,10 @@ t_slist	*gs_slist_reverse(t_slist *list); // To_check
 
 // OK
 t_slist	*gs_slist_at(t_slist *list, pos_t i);
-t_slist	*gs_slist_find(t_slist *list, void *data_ref, int (*cmp)());
-t_slist	*gs_slist_find_max(t_slist *list, int (*cmp)());
-t_slist	*gs_slist_find_min(t_slist *list, int (*cmp)());
+t_slist	*gs_slist_find(	t_slist *list, void *data_ref,
+						int (*cmp)(void *, void *));
+t_slist	*gs_slist_find_max(t_slist *list, int (*cmp)(void *, void *));
+t_slist	*gs_slist_find_min(t_slist *list, int (*cmp)(void *, void *));
 
 // To_check
 char	**gs_slist_toarray(t_slist *list, bool_t delete_list);

@@ -1,3 +1,13 @@
+/**
+ * \file ft_strcat.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_strcat(char *dest, const char *src)
+ * \brief Same as strcat in the standard library
+ *
+ * strcat implementation. Return NULL if one of the arguments is NULL.
+ */
+
 #include "libft.h"
 
 char	*ft_strcat(char *dest, const char *src)

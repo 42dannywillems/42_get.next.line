@@ -1,3 +1,13 @@
+/**
+ * \file ft_strsplit_str.c
+ * \author Danny Willems
+ *
+ * \fn char **ft_strsplit_str(const char *str, const char *sep)
+ * \brief Split str into an array of char. The split str is sep.
+ *
+ * Split str into an array of char. The split str is sep.
+ */
+
 #include "libft.h"
 
 char	**ft_strsplit_str(const char *str, const char *sep)
@@ -13,7 +23,6 @@ char	**ft_strsplit_str(const char *str, const char *sep)
 	len_sep = ft_strlen(sep);
 	len_str = ft_strlen(str);
 	list = NULL;
-
 	while (i < len_str)
 	{
 		len = 0;

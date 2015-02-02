@@ -1,3 +1,13 @@
+/**
+ * \file ft_memset.c
+ * \author Danny Willems
+ *
+ * \fn void *ft_memset(void *s, int c, size_t n)
+ * \brief Same as memset in the standard library
+ *
+ * memset implementation.
+ */
+
 #include "libft.h"
 
 void	*ft_memset(void *s, int c, size_t n)

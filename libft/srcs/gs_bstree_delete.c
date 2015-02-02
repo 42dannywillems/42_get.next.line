@@ -1,7 +1,9 @@
-#include "libft.h"
+/**
+ * DO NOT USE. NOT TESTED AND ALGORITHM NOT CHECKED.
+ * It doesn't include memory management ! We don't free deleted element !
+ */
 
-/* 
- * It doesn't include memory management ! We don't free deleted element !*/
+#include "libft.h"
 
 static void		*gs_bstree_delete_min(t_bstree *bstree)
 {

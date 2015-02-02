@@ -1,3 +1,13 @@
+/**
+ * \file ft_memmove.c
+ * \author Danny Willems
+ *
+ * \fn void *ft_memmove(void *s1, const void *s2, size_t n)
+ * \brief Same as memmove in the standard library
+ *
+ * memmove implementation.
+ */
+
 #include "libft.h"
 
 void	*ft_memmove(void *s1, const void *s2, size_t n)

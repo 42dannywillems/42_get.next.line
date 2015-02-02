@@ -1,3 +1,13 @@
+/**
+ * \file ft_strchr.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_strchr(const char *s, int c)
+ * \brief Same as strchr in the standard library
+ *
+ * strchr implementation.
+ */
+
 #include "libft.h"
 
 char	*ft_strchr(const char *s, int c)

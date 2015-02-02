@@ -1,3 +1,13 @@
+/**
+ * \file ft_strcpy.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_strcpy(char *dest, const char *src)
+ * \brief Same as strcpy in the standard library
+ *
+ * strcpy implementation. Return NULL if one of the arguments is NULL.
+ */
+
 #include "libft.h"
 
 char	*ft_strcpy(char *dest, const char *src)

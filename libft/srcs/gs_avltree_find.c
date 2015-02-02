@@ -1,3 +1,7 @@
+/**
+ * DO NOT USE. NOT TESTED AND ALGORITHM NOT CHECKED.
+ */
+
 #include "libft.h"
 
 t_avltree	*gs_avltree_find(t_avltree *avltree, void *data,

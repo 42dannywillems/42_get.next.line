@@ -1,3 +1,15 @@
+/**
+ * \file ft_strmapi.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_strmapi(char *s, char (*f)(unsigned int, char *))
+ * \brief Apply f to each element of s, and replace it with the result.
+ *
+ * Replace each element of s with the return of the application f on this
+ * element, depending on the position.
+ * Modify the string s.
+ */
+
 #include "libft.h"
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))

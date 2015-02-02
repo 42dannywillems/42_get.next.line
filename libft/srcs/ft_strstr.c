@@ -1,3 +1,13 @@
+/**
+ * \file ft_strstr.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_strstr(const char *haystack, const char *needle)
+ * \brief Same as strstr in the standard library
+ *
+ * strstr implementation.
+ */
+
 #include "libft.h"
 
 char	*ft_strstr(const char *haystack, const char *needle)

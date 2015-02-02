@@ -1,3 +1,13 @@
+/**
+ * \file ft_atoi.c
+ * \author Danny Willems
+ *
+ * \fn int ft_atoi(const char *str)
+ * \brief Same as atoi in the standard library
+ *
+ * atoi implementation.
+ */
+
 #include "libft.h"
 
 int		ft_atoi(const char *str)

@@ -1,3 +1,13 @@
+/**
+ * \file ft_strnstr.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_strnstr(const char *haystack, const char *needle, size_t n)
+ * \brief Return a pointer to the first occurence of needle.
+ *
+ * Return a pointer to the first occurence of needle.
+ */
+
 #include "libft.h"
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t n)

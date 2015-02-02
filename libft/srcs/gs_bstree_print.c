@@ -1,3 +1,7 @@
+/**
+ * DO NOT USE. NOT TESTED AND ALGORITHM NOT CHECKED.
+ */
+
 #include "libft.h"
 
 void	gs_bstree_print(t_bstree *bstree)

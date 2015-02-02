@@ -1,3 +1,13 @@
+/**
+ * \file ft_strlcat.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_strlcat(char *dest, const char *src, size_t size)
+ * \brief Same as strlcat in the standard library
+ *
+ * strlcat implementation.
+ */
+
 #include "libft.h"
 
 char	*ft_strlcat(char *dest, const char *src, size_t size)

@@ -1,3 +1,15 @@
+/**
+ * \file ft_strmap.c
+ * \author Danny Willems
+ *
+ * \fn char *ft_strmap(char *s, char (*f)(char *))
+ * \brief Apply f to each element of s, and replace it with the result.
+ *
+ * Replace each element of s with the return of the application f on this
+ * element. 
+ * Modify the string s.
+ */
+
 #include "libft.h"
 
 char	*ft_strmap(char const *s, char (*f)(char))

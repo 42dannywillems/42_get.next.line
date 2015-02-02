@@ -1,3 +1,13 @@
+/**
+ * \file ft_memchr.c
+ * \author Danny Willems
+ *
+ * \fn void *ft_memchr(const void *s, int c, size_t n)
+ * \brief Same as memchr in the standard library
+ *
+ * memchr implementation.
+ */
+
 #include "libft.h"
 
 void	*ft_memchr(const void *s, int c, size_t n)

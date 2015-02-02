@@ -1,3 +1,13 @@
+/**
+ * \file ft_memcmp.c
+ * \author Danny Willems
+ *
+ * \fn int ft_memcmp(const void *s1, const void *s2, size_t n)
+ * \brief Same as memcmp in the standard library
+ *
+ * memcmp implementation.
+ */
+
 #include "libft.h"
 
 int		ft_memcmp(const void *s1, const void *s2, size_t n)

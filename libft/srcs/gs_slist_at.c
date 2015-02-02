@@ -1,3 +1,13 @@
+/**
+ * \file gs_slist_at.c
+ * \author Danny Willems
+ *
+ * \fn t_slist *gs_slist_at(t_slist *list, pos_t i)
+ * \brief Get ith node.
+ * 
+ * Return the node at the position i in the linked list begin with list.
+ */
+
 #include "gs_slist.h"
 
 t_slist	*gs_slist_at(t_slist *list, pos_t i)
@@ -10,4 +20,3 @@ t_slist	*gs_slist_at(t_slist *list, pos_t i)
 	else
 		return (NULL);
 }
-

@@ -1,3 +1,13 @@
+/**
+ * \file ft_memccpy.c
+ * \author Danny Willems
+ *
+ * \fn void *ft_memccpy(void *dest, const void *src, int c, size_t n)
+ * \brief Same as memccpy in the standard library
+ *
+ * memccpy implementation.
+ */
+
 #include "libft.h"
 
 void	*ft_memccpy(void *dest, const void *src, int c, size_t n)
