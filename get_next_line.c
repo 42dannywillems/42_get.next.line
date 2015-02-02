@@ -5,37 +5,7 @@ int		find_fd(void *fd_search, void *fd_compare)
 	return (*(int *)fd_search != ((t_file *)(fd_compare))->fd);
 }
 
-int		update_red_line(t_file *file, char **line, char *buf, int type)
-{
-	char *tmp;
-
-	if (type >= 0 && (*line = ft_strndup(file->red, type)))
-	{
-		file->red += type + 1;
-		return (TRUE);
-	}
-	else if (type == GNL_FINISHED && (*line = ft_strdup(file->red)))
-	{
-		ft_strdel(&(file->b_red));
-		file->red = NULL;
-		return (TRUE);
-	}
-	else if (type == GNL_JOIN && (tmp = ft_strjoin(file->red, buf)))
-	{
-		ft_strdel(&(file->b_red));
-		file->red = tmp;
-		file->b_red = tmp;
-		return (TRUE);
-	}
-	return (FALSE);
-}
-
-/*
- * Renvoie le noeud comportant fd comme fd.
- * Si le fd n'est pas encore dedans, il sera insere, et il sera mis en tete
- * Si le fd est dedans, on renvoie simplement le maillon qui le contient
- */
-t_slist		*get_fd(t_slist **opened_fd, int fd)
+t_file *get_file(t_slist **opened_fd, int fd)
 {
 	t_slist *current_fd;
 	t_file	*current_file;
@@ -49,88 +19,58 @@ t_slist		*get_fd(t_slist **opened_fd, int fd)
 				free(current_file);
 				return (NULL);
 			}
-			current_file->fd = fd;
 			current_file->red = current_file->b_red;
-			return ((*opened_fd = gs_slist_push_front(*opened_fd, current_file)));
+			current_file->fd = fd;
+			if ((*opened_fd = gs_slist_push_front(*opened_fd, current_file)))
+				return (current_file);
+			free(current_file->b_red);
+			free(current_file);
 		}
-		return (NULL);
-	}
-	return (current_fd);
-}
-
-t_slist		*init_fd(int fd)
-{
-	t_slist	*opened_fd;
-	t_file	*current_file;
-
-	if ((current_file = (t_file *)(malloc(sizeof(t_file)))) == NULL)
-		return (NULL);
-	if ((current_file->b_red = ft_strdup("")))
-	{
-		current_file->red = current_file->b_red;
-		current_file->fd = fd;
 	}
 	else
-	{
-		free(current_file);
-		return (NULL);
-	}
-	if ((opened_fd = gs_slist_create(current_file, NULL)) == NULL)
-	{
-		free(current_file->b_red);
-		free(current_file);
-		return (NULL);
-	}
-	return (opened_fd);
+		return ((t_file *)(current_fd->data));
+	return (NULL);
 }
 
 int		get_next_line(int fd, char **line)
 {
-	static t_slist	*opened_fd;
-	t_slist			*current_fd;
-	t_file			*current_file;
+	static t_slist	*opened_fd = NULL;
+	t_file			*c_file;
 	int				ret;
 	char			buf[BUFSIZE + 1];
 	char			*chr;
+	char			*tmp;
 
-	// At the first call, we must initialize opened_fd. init_fd do it.
-	if (opened_fd == NULL)
-	{
-		if ((opened_fd = init_fd(fd)) == NULL)
-			return (GNL_ERROR);
-		current_fd = opened_fd;
-	}
-	// opened_fd is updated automatically
-	// if get_fd returns NULL, it's because there's a malloc which didn't work,
-	// so we return an error.
-	else if ((current_fd = get_fd(&opened_fd, fd)) == NULL)
+//	ft_putendl("TEST IN GET_NEXT_LINE");
+//	ft_putnstr("*", 80);
+//	ft_putendl("");
+	if (fd <= 0 || !line || (c_file = get_file(&opened_fd, fd)) == NULL)
 		return (GNL_ERROR);
-	current_file = (t_file *)(current_fd->data);
-
-	if ((chr = ft_strchr(current_file->red, '\n')))
+	if ((chr = ft_strchr(c_file->red, '\n')))
 	{
-		if (!update_red_line(current_file, line, NULL, chr - current_file->red))
+		if ((*line = ft_strndup(c_file->red, chr - c_file->red)) == NULL)
 			return (GNL_ERROR);
+		c_file->red = chr + 1;
+		return (GNL_OK);
 	}
-	else
+	if ((ret = read(c_file->fd, buf, BUFSIZE)) == READ_ERROR)
+		return (GNL_ERROR);
+	buf[ret] = '\0';
+	if (ret == READ_FINISHED)
 	{
-		if ((ret = read(current_file->fd, buf, BUFSIZE)) == READ_ERROR)
+		if ((*line = ft_strdup(c_file->red)) == NULL)
 			return (GNL_ERROR);
-		buf[ret] = '\0';
-		if (ret == READ_FINISHED)
-		{
-			if (update_red_line(current_file, line, buf, GNL_END) == FALSE)
-				return (GNL_ERROR);
-//			Delete the current_fd node in the same time
-			gs_slist_delete(opened_fd, &fd, &find_fd);
-			ft_strdel(&(current_file->b_red));
-			free(current_file);
-			return (GNL_FINISHED);
-		}
-//		Realloc current_file->red with enough memory space to concatenate with buffer
-		if (update_red_line(current_file, NULL, buf, GNL_JOIN) == FALSE)
-			return (GNL_ERROR);
-		get_next_line(fd, line);
+//		ft_putendl(*line);
+		opened_fd = gs_slist_delete(opened_fd, &fd, &find_fd);
+		free(c_file->b_red);
+		free(c_file);
+		return (GNL_FINISHED);
 	}
-	return (GNL_OK);
+	if ((tmp = ft_strjoin(c_file->red, buf)) == NULL)
+		return (GNL_ERROR);
+	free(c_file->b_red);
+	c_file->b_red = tmp;
+	c_file->red = tmp;
+//	ft_putendl(c_file->red);
+	return (get_next_line(fd, line));
 }
