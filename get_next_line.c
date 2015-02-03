@@ -5,6 +5,32 @@ int		find_fd(void *fd_search, void *fd_compare)
 	return (*(int *)fd_search != ((t_file *)(fd_compare))->fd);
 }
 
+int		gnl_read(t_slist *opened_fd, t_file *c_file, char **line)
+{
+	char	buf[BUFSIZE + 1];
+	char	*tmp;
+	int		ret;
+
+	if ((ret = read(c_file->fd, buf, BUFSIZE)) == READ_ERROR)
+		return (GNL_ERROR);
+	buf[ret] = '\0';
+	if (ret == READ_FINISHED)
+	{
+		if ((*line = ft_strdup(c_file->red)) == NULL)
+			return (GNL_ERROR);
+		opened_fd = gs_slist_delete(opened_fd, &c_file->fd, &find_fd);
+		free(c_file->b_red);
+		free(c_file);
+		return (GNL_FINISHED);
+	}
+	if ((tmp = ft_strjoin(c_file->red, buf)) == NULL)
+		return (GNL_ERROR);
+	free(c_file->b_red);
+	c_file->b_red = tmp;
+	c_file->red = tmp;
+	return (get_next_line(c_file->fd, line));
+}
+
 t_file	*get_file(t_slist **opened_fd, int fd)
 {
 	t_slist *current_fd;
@@ -36,10 +62,7 @@ int		get_next_line(int fd, char **line)
 {
 	static t_slist	*opened_fd = NULL;
 	t_file			*c_file;
-	int				ret;
-	char			buf[BUFSIZE + 1];
 	char			*chr;
-	char			*tmp;
 
 	if (fd <= 0 || !line || (c_file = get_file(&opened_fd, fd)) == NULL)
 		return (GNL_ERROR);
@@ -50,22 +73,5 @@ int		get_next_line(int fd, char **line)
 		c_file->red = chr + 1;
 		return (GNL_OK);
 	}
-	if ((ret = read(c_file->fd, buf, BUFSIZE)) == READ_ERROR)
-		return (GNL_ERROR);
-	buf[ret] = '\0';
-	if (ret == READ_FINISHED)
-	{
-		if ((*line = ft_strdup(c_file->red)) == NULL)
-			return (GNL_ERROR);
-		opened_fd = gs_slist_delete(opened_fd, &fd, &find_fd);
-		free(c_file->b_red);
-		free(c_file);
-		return (GNL_FINISHED);
-	}
-	if ((tmp = ft_strjoin(c_file->red, buf)) == NULL)
-		return (GNL_ERROR);
-	free(c_file->b_red);
-	c_file->b_red = tmp;
-	c_file->red = tmp;
-	return (get_next_line(fd, line));
+	return (gnl_read(opened_fd, c_file, line));
 }
