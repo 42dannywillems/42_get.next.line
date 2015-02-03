@@ -5,7 +5,7 @@ int		find_fd(void *fd_search, void *fd_compare)
 	return (*(int *)fd_search != ((t_file *)(fd_compare))->fd);
 }
 
-t_file *get_file(t_slist **opened_fd, int fd)
+t_file	*get_file(t_slist **opened_fd, int fd)
 {
 	t_slist *current_fd;
 	t_file	*current_file;
@@ -41,9 +41,6 @@ int		get_next_line(int fd, char **line)
 	char			*chr;
 	char			*tmp;
 
-//	ft_putendl("TEST IN GET_NEXT_LINE");
-//	ft_putnstr("*", 80);
-//	ft_putendl("");
 	if (fd <= 0 || !line || (c_file = get_file(&opened_fd, fd)) == NULL)
 		return (GNL_ERROR);
 	if ((chr = ft_strchr(c_file->red, '\n')))
@@ -60,7 +57,6 @@ int		get_next_line(int fd, char **line)
 	{
 		if ((*line = ft_strdup(c_file->red)) == NULL)
 			return (GNL_ERROR);
-//		ft_putendl(*line);
 		opened_fd = gs_slist_delete(opened_fd, &fd, &find_fd);
 		free(c_file->b_red);
 		free(c_file);
@@ -71,6 +67,5 @@ int		get_next_line(int fd, char **line)
 	free(c_file->b_red);
 	c_file->b_red = tmp;
 	c_file->red = tmp;
-//	ft_putendl(c_file->red);
 	return (get_next_line(fd, line));
 }
