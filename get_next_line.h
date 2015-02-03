@@ -22,9 +22,6 @@ typedef struct		s_file
 	char	*b_red;
 }					t_file;
 
-int		find_fd(void *fd_search, void *fd_compare);
-int		gnl_read(t_slist *opened_fd, t_file *c_file, char **line);
-t_file	*get_file(t_slist **opened_fd, int fd);
 int		get_next_line(int fd, char **line);
 
 #endif

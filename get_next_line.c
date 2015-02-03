@@ -1,11 +1,11 @@
 #include "get_next_line.h"
 
-int		find_fd(void *fd_search, void *fd_compare)
+static int		find_fd(void *fd_search, void *fd_compare)
 {
 	return (*(int *)fd_search != ((t_file *)(fd_compare))->fd);
 }
 
-int		gnl_read(t_slist *opened_fd, t_file *c_file, char **line)
+static int		gnl_read(t_slist **opened_fd, t_file *c_file, char **line)
 {
 	char	buf[BUFSIZE + 1];
 	char	*tmp;
@@ -18,7 +18,7 @@ int		gnl_read(t_slist *opened_fd, t_file *c_file, char **line)
 	{
 		if ((*line = ft_strdup(c_file->red)) == NULL)
 			return (GNL_ERROR);
-		opened_fd = gs_slist_delete(opened_fd, &c_file->fd, &find_fd);
+		*opened_fd = gs_slist_delete(*opened_fd, &c_file->fd, &find_fd);
 		free(c_file->b_red);
 		free(c_file);
 		return (GNL_FINISHED);
@@ -31,7 +31,7 @@ int		gnl_read(t_slist *opened_fd, t_file *c_file, char **line)
 	return (get_next_line(c_file->fd, line));
 }
 
-t_file	*get_file(t_slist **opened_fd, int fd)
+static t_file	*get_file(t_slist **opened_fd, int fd)
 {
 	t_slist *current_fd;
 	t_file	*current_file;
@@ -73,5 +73,5 @@ int		get_next_line(int fd, char **line)
 		c_file->red = chr + 1;
 		return (GNL_OK);
 	}
-	return (gnl_read(opened_fd, c_file, line));
+	return (gnl_read(&opened_fd, c_file, line));
 }
