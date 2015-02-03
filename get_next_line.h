@@ -23,9 +23,7 @@ typedef struct		s_file
 }					t_file;
 
 int		find_fd(void *fd_search, void *fd_compare);
-int		update_red_line(t_file *file, char **line, char *buf, int type);
-t_slist	*get_fd(t_slist **opened_fd, int fd);
-t_slist	*init_fd(int fd);
+t_file	*get_file(t_slist **opened_fd, int fd);
 int		get_next_line(int fd, char **line);
 
 #endif
