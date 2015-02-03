@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define NB_LINE 1
+#define NB_LINE 10
 int main(int argc, char **argv)
 {
 	int		fd;
@@ -25,15 +25,11 @@ int main(int argc, char **argv)
 //			ft_putnbrendl(i);
 			if ((ret = get_next_line(fd, &line)) > 0)
 				ft_putendl(line);
-			ft_putnstr("*", 80);
-			ft_putendl("");
-			ft_putnbrendl(ret);
 			ft_strdel(&line);
 
 //			read(STDIN, buf, 5);
 			if ((ret = get_next_line(fd2, &line)) > 0)
 				ft_putendl(line);
-			ft_putnbrendl(ret);
 			ft_strdel(&line);
 
 //			read(STDIN, buf, 5);
