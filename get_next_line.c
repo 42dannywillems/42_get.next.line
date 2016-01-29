@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dwillems <dwillems@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/01/10 20:05:21 by dwillems          #+#    #+#             */
+/*   Updated: 2016/01/29 17:32:43 by dwillems         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 static int		find_fd(void *fd_search, void *fd_compare)
@@ -7,11 +19,11 @@ static int		find_fd(void *fd_search, void *fd_compare)
 
 static int		gnl_read(t_slist **opened_fd, t_file *c_file, char **line)
 {
-	char	buf[BUFSIZE + 1];
+	char	buf[BUFF_SIZE + 1];
 	char	*tmp;
 	int		ret;
 
-	if ((ret = read(c_file->fd, buf, BUFSIZE)) == READ_ERROR)
+	if ((ret = read(c_file->fd, buf, BUFF_SIZE)) == READ_ERROR)
 		return (GNL_ERROR);
 	buf[ret] = '\0';
 	if (ret == READ_FINISHED)
@@ -58,13 +70,14 @@ static t_file	*get_file(t_slist **opened_fd, int fd)
 	return (NULL);
 }
 
-int		get_next_line(int fd, char **line)
+int				get_next_line(int fd, char **line)
 {
 	static t_slist	*opened_fd = NULL;
 	t_file			*c_file;
 	char			*chr;
 
-	if (fd <= 0 || !line || (c_file = get_file(&opened_fd, fd)) == NULL)
+	if (BUFF_SIZE <= 0 || fd < 0 || !line
+		|| (c_file = get_file(&opened_fd, fd)) == NULL)
 		return (GNL_ERROR);
 	if ((chr = ft_strchr(c_file->red, '\n')))
 	{
