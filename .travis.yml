@@ -5,5 +5,5 @@ env:
 
 script:
   - git clone https://github.com/yyang42/moulitest $HOME/moulitest
-  - echo "LIBFT_PATH=$TRAVIS_BUILD_DIR" >> $HOME/moulitest/config.ini
+  - echo "GET_NEXT_LINE_PATH=$TRAVIS_BUILD_DIR" >> $HOME/moulitest/config.ini
   - cd $HOME/moulitest && make $PROJECT
