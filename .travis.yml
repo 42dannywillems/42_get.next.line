@@ -1,9 +1,9 @@
 language: c
 
 env:
-  - 42_PROJECT=get_next_line
+  - PROJECT=get_next_line
 
 script:
   - git clone https://github.com/yyang42/moulitest $HOME/moulitest
   - echo "LIBFT_PATH=$TRAVIS_BUILD_DIR" >> $HOME/moulitest/config.ini
-  - cd $HOME/moulitest && make $42_PROJECT
+  - cd $HOME/moulitest && make $PROJECT
